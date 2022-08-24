@@ -1,15 +1,18 @@
 import { Box, Paper, Typography } from "@mui/material";
 import { useTheme } from "@mui/system";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { authActions } from "../authSlice";
 import LoginForm from "../components/LoginForm";
 
 const LoginPage = () => {
   const theme = useTheme();
   const initialValue = {};
+  const dispatch = useDispatch();
 
   const handleFormSubmit = (data) => {
-    console.log(data);
+    dispatch(authActions.loginRequest(data));
   };
 
   return (

@@ -1,10 +1,12 @@
 import { Box, Button, CircularProgress, useTheme } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import { InputField } from "../../../components/FormFields";
 
 const LoginForm = ({ initialValue, onSubmit }) => {
   const theme = useTheme();
+  const isLoading = useSelector((state) => state.auth.isLoading);
   const {
     control,
     handleSubmit,
@@ -14,13 +16,13 @@ const LoginForm = ({ initialValue, onSubmit }) => {
   });
 
   const handleFormSubmit = (data) => {
-    console.log(data);
+    onSubmit(data);
   };
 
   return (
     <Box width={300}>
       <form onSubmit={handleSubmit(handleFormSubmit)}>
-        <InputField name="name" label="name" control={control} />
+        <InputField name="email" label="email" control={control} />
         <InputField
           name="password"
           label="password"
@@ -33,10 +35,10 @@ const LoginForm = ({ initialValue, onSubmit }) => {
           variant="contained"
           fullWidth
           sx={{ marginTop: theme.spacing(1.5) }}
-          disabled={isSubmitting}
+          disabled={isLoading}
           color="primary"
         >
-          {isSubmitting && <CircularProgress color="primary" size={16} />}
+          {isLoading && <CircularProgress color="primary" size={16} />}
           &nbsp; Login
         </Button>
       </form>

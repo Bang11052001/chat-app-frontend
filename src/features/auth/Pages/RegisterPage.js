@@ -2,6 +2,9 @@ import { Box, Paper, Typography } from "@mui/material";
 import { useTheme } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import authService from "../../../services/authServices";
+import { history } from "../../../utils/history";
 import RegiterForm from "../components/RegisterForm";
 
 const LoginPage = () => {
@@ -9,8 +12,14 @@ const LoginPage = () => {
 
   const initialValue = {};
 
-  const handleFormSubmit = (data) => {
-    console.log(data);
+  const handleFormSubmit = async (data) => {
+    try {
+      await authService.register(data);
+      toast.success("Register success!");
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

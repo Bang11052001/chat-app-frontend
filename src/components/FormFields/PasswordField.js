@@ -42,7 +42,7 @@ export const PasswordField = ({
       variant={variant}
       type="text"
     >
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+      <InputLabel htmlFor="outlined-adornment-password">{label}</InputLabel>
       <OutlinedInput
         label={label}
         type={isShowPassword ? "text" : "password"}

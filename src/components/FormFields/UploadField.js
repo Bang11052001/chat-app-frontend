@@ -1,6 +1,7 @@
 import { FormControl, FormHelperText, FormLabel, Input } from "@mui/material";
 import React from "react";
 import { useController } from "react-hook-form";
+import cloudinaryUpload from "../../services/uploads";
 
 export const UploadField = ({
   size = "small",
@@ -17,6 +18,13 @@ export const UploadField = ({
     name,
   });
 
+  const handleFileUpload = (e) => {
+    const uploadData = new FormData();
+    uploadData.append("file", e.target.files[0], "file");
+    cloudinaryUpload(uploadData);
+    onChange(e);
+  };
+
   return (
     <FormControl margin="dense">
       <FormLabel>{label}</FormLabel>
@@ -27,12 +35,13 @@ export const UploadField = ({
         type="file"
         p={1.5}
         accept="image/*"
-        onChange={onChange}
+        onChange={(e) => handleFileUpload(e)}
         onBlur={onBlur}
         inputRef={ref}
         error={invalid}
         inputProps={inputProps}
       />
+
       <FormHelperText>{error?.message}</FormHelperText>
     </FormControl>
   );

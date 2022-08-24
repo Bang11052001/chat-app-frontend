@@ -56,7 +56,7 @@ const RegiterForm = ({ initialValue, onSubmit }) => {
   });
 
   const handleFormSubmit = (data) => {
-    console.log(data);
+    onSubmit(data);
   };
 
   return (
@@ -68,12 +68,11 @@ const RegiterForm = ({ initialValue, onSubmit }) => {
         {/* Password field  */}
         <PasswordField name="password" label="Password" control={control} />
 
-        <InputField
+        <PasswordField
           name="confirmPassword"
           label="Confirm Password"
           control={control}
-          type="password"
-        ></InputField>
+        />
 
         {/* Upload  Image field*/}
         <UploadField label="Upload image" name="image" control={control} />
