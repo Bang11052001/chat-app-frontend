@@ -18,7 +18,8 @@ const LoginPage = () => {
       toast.success("Register success!");
       history.push("/");
     } catch (error) {
-      console.log(error);
+      toast.error("Register failed!");
+      console.log(error.message);
     }
   };
 
