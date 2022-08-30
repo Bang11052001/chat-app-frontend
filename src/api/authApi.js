@@ -1,4 +1,4 @@
-import { axiosClient } from "../utils";
+import { axiosClient } from "./axiosClient";
 
 const authService = {
   login: (data) => {

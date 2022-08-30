@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import App from "./App";
 import { store } from "./app/store";
+import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { history } from "./utils/history";
 

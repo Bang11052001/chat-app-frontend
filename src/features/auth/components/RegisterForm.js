@@ -14,19 +14,17 @@ const RegiterForm = ({ initialValue, onSubmit }) => {
 
   //   validate
   const schema = yup.object({
-    name: yup
-      .string()
-      .required("Name is a required field")
-      .test("two-word", "Please enter at least two words", (value) => {
-        if (!value) return;
+    name: yup.string().required("Name is a required field"),
+    // .test("two-word", "Please enter at least two words", (value) => {
+    //   if (!value) return;
 
-        return (
-          value
-            .trim()
-            .split(" ")
-            .filter((x) => !!x).length >= 2
-        );
-      }),
+    //   return (
+    //     value
+    //       .trim()
+    //       .split(" ")
+    //       .filter((x) => !!x).length >= 2
+    //   );
+    // }),
     email: yup
       .string()
       .required("Email is a required field")

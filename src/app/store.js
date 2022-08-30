@@ -2,10 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import authReducer from "../features/auth/authSlice";
+import chatReducer from "../features/chats/chatSlice";
+import userReducer from "../features/user/userSlice";
 import rootSaga from "./rootSaga";
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  user: userReducer,
+  chat: chatReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

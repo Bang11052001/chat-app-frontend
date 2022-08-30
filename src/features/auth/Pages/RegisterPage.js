@@ -3,7 +3,7 @@ import { useTheme } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import authService from "../../../services/authServices";
+import authService from "../../../api/authApi";
 import { history } from "../../../utils/history";
 import RegiterForm from "../components/RegisterForm";
 

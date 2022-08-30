@@ -1,7 +1,7 @@
 import { FormControl, FormHelperText, FormLabel, Input } from "@mui/material";
 import React from "react";
 import { useController } from "react-hook-form";
-import cloudinaryUpload from "../../services/uploads";
+import cloudinaryUpload from "../../api/uploads";
 
 export const UploadField = ({
   size = "small",
@@ -22,7 +22,8 @@ export const UploadField = ({
     const uploadData = new FormData();
     uploadData.append("file", e.target.files[0], "file");
     cloudinaryUpload(uploadData);
-    onChange(e);
+    // console.log(uploadData);
+    // onChange()(e);
   };
 
   return (
