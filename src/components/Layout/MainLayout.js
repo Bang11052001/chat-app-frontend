@@ -11,9 +11,9 @@ import { Header } from "../Common";
 const MainLayout = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { selectedChatId } = useSelector((state) => state.chat);
+  const { selectedChat } = useSelector((state) => state.chat);
 
-  const isSelectedUser = Object.keys(selectedChatId).length > 0;
+  const isSelectedUser = Object.keys(selectedChat).length > 0;
 
   useEffect(() => {
     dispatch(userActions.fetchUserByIdRequest(getCookie("access_token")));
@@ -27,11 +27,11 @@ const MainLayout = () => {
       </Grid>
 
       {/* Sidebar  */}
-      <Grid container spacing={1}>
+      <Grid container>
         <Grid
           item
           xs={12}
-          md={12}
+          md={3}
           lg={3}
           sx={{
             borderRight: `1px solid ${theme.palette.divider}`,
@@ -47,7 +47,7 @@ const MainLayout = () => {
         <Grid
           item
           xs={12}
-          md={12}
+          md={9}
           lg={9}
           sx={{
             [theme.breakpoints.down("md")]: {

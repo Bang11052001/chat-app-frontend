@@ -1,3 +1,4 @@
+import authConfig from "../config/auth";
 import { axiosClient } from "./axiosClient";
 
 const userApi = {
@@ -7,7 +8,7 @@ const userApi = {
   searchByNameOrEmail: ({ searchValue, config }) => {
     return axiosClient.get(
       process.env.REACT_APP_BASE_URL + `/user?search=${searchValue}`,
-      config
+      authConfig
     );
   },
 };

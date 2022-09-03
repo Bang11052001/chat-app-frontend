@@ -63,7 +63,6 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [stateSideDrawer, setStateSideDrawer] = React.useState(false);
-  const [stateProfileModal, setStateProfileModal] = React.useState(false);
   const { userLogged } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.user);
@@ -81,11 +80,6 @@ export default function Header() {
       return;
     }
     setStateSideDrawer(state);
-  };
-
-  // Open profileModal
-  const openProfileModal = (state) => {
-    setStateProfileModal(state);
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -123,7 +117,9 @@ export default function Header() {
       open={isMenuOpen}
       onBlur={() => setAnchorEl(false)}
     >
-      <MenuItem onClick={() => openProfileModal(true)}>Profile</MenuItem>
+      <ProfileModal user={userLogged}>
+        <MenuItem>Profile</MenuItem>
+      </ProfileModal>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
@@ -255,11 +251,6 @@ export default function Header() {
       />
 
       {/* Profile Modal  */}
-      <ProfileModal
-        onOpen={openProfileModal}
-        state={stateProfileModal}
-        user={userLogged}
-      />
     </Box>
   );
 }

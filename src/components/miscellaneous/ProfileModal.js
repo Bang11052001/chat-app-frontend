@@ -8,29 +8,33 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Box } from "@mui/system";
 import * as React from "react";
 
-export default function ProfileModal({
-  onOpen,
-  state,
-  user,
-  fullWidth = true,
-  maxWidth = "xs",
-}) {
+export default function ProfileModal({ user, fullWidth = true, children }) {
   const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+
   const handleClose = () => {
-    onOpen(false);
+    setOpen(false);
+  };
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
   return (
-    <div>
+    <>
+      <span onClick={handleClickOpen}>{children}</span>
+
+      {/* Dialog  */}
       <Dialog
-        open={state}
+        open={open}
         onClose={handleClose}
         fullWidth={fullWidth}
         maxWidth="xs"
       >
         <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
           <Box>
-            <Typography variant="h4">{user.name}</Typography>
+            <Typography component="span" variant="h4">
+              {user.name}
+            </Typography>
           </Box>
 
           <IconButton
@@ -58,7 +62,11 @@ export default function ProfileModal({
             src={user.pic}
             sx={{ width: 124, height: 124 }}
           />
-          <Typography variant="h5" sx={{ marginTop: theme.spacing(3) }}>
+          <Typography
+            component="span"
+            variant="h5"
+            sx={{ marginTop: theme.spacing(3) }}
+          >
             {user.email}
           </Typography>
         </DialogContent>
@@ -68,6 +76,6 @@ export default function ProfileModal({
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }

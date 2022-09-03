@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -10,19 +10,12 @@ import { toast } from "react-toastify";
 import chatApi from "../../api/chatApi";
 import userApi from "../../api/userApi";
 import { chatActions } from "../../features/chats/chatSlice";
-import { getCookie } from "../../utils/cookie";
 import ChatLoading from "../Common/ChatLoading";
 import UserListItem from "../userAvatar/UserListItem";
 
 export default function SideDrawer({ anchor, state, onOpen }) {
   const theme = useTheme();
-  const token = getCookie("access_token");
-  const config = {
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
+
   const dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = React.useState("");
@@ -37,8 +30,7 @@ export default function SideDrawer({ anchor, state, onOpen }) {
 
     try {
       setLoading(true);
-      const users = (await userApi.searchByNameOrEmail({ searchValue, config }))
-        .data;
+      const users = (await userApi.searchByNameOrEmail({ searchValue })).data;
       setLoading(false);
 
       setUsers(users);
@@ -47,11 +39,11 @@ export default function SideDrawer({ anchor, state, onOpen }) {
     }
   };
 
-  const handleClickUserItem = async (id) => {
+  const handleSelectUserItem = async (user) => {
     try {
-      const { data } = await chatApi.accessChat({ id, config });
-      await dispatch(chatActions.fetchAllChatRequest(config));
-      dispatch(chatActions.selectChat(data._id));
+      const { data } = await chatApi.accessChat({ id: user._id });
+      await dispatch(chatActions.fetchAllChatRequest());
+      dispatch(chatActions.selectChat(data));
       onOpen()(false);
     } catch (error) {
       console.log(error);
@@ -62,9 +54,7 @@ export default function SideDrawer({ anchor, state, onOpen }) {
     <Drawer anchor={anchor} open={state} onClose={onOpen(false)}>
       <Box
         role="presentation"
-        // onClick={toggleDrawer(false)}
-        // onKeyDown={toggleDrawer(false)}
-        sx={{ padding: theme.spacing(2), height: "100vh", minWidth: "25vw" }}
+        sx={{ padding: theme.spacing(2), minWidth: "25vw" }}
       >
         <List>
           <Typography variant="h5">Search Users</Typography>
@@ -89,17 +79,20 @@ export default function SideDrawer({ anchor, state, onOpen }) {
         </Box>
 
         {/* User list Item*/}
-        {loading ? (
-          <ChatLoading />
-        ) : (
-          users?.map((user) => (
-            <UserListItem
-              user={user}
-              key={user._id}
-              onClick={handleClickUserItem}
-            />
-          ))
-        )}
+        <Stack spacing={1.5} mt={2}>
+          {loading ? (
+            <ChatLoading />
+          ) : (
+            users?.map((user) => (
+              <UserListItem
+                user={user}
+                key={user._id}
+                onClick={handleSelectUserItem}
+                style={{ paddingY: 1, paddingX: 3 }}
+              />
+            ))
+          )}
+        </Stack>
       </Box>
     </Drawer>
   );

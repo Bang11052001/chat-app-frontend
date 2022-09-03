@@ -1,11 +1,11 @@
 import { Avatar, Box, Typography, useTheme } from "@mui/material";
 import React from "react";
 
-const UserListItem = ({ user, onClick, onOpen }) => {
+const UserListItem = ({ user, onClick, style }) => {
   const theme = useTheme();
 
   const handleClick = () => {
-    onClick(user._id);
+    onClick(user);
   };
 
   return (
@@ -14,16 +14,17 @@ const UserListItem = ({ user, onClick, onOpen }) => {
         cursor: "pointer",
         backgroundColor: "#E8E8E8",
         "&:hover": {
-          backgroundColor: "primary.main",
-          opacity: [0.9, 0.8, 0.7],
+          backgroundColor: theme.palette.primary.main,
         },
         display: "flex",
         alignItems: "center",
         color: "black",
-        paddingX: 3,
-        paddingY: 2,
-        marginY: 2,
         borderRadius: theme.spacing(1),
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        MozUserSelect: "none",
+        KhtmlUserSelect: "none",
+        ...style,
       }}
       onClick={handleClick}
     >

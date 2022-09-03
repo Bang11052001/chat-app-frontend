@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoading: false,
   userLogged: {},
-  list: [],
 };
 const userSlice = createSlice({
   name: "user",
@@ -20,8 +19,6 @@ const userSlice = createSlice({
       state.isLoggedIn = false;
       state.userLogged = {};
     },
-
-    searchWithDebouce(state, action) {},
   },
 });
 

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoading: false,
   chatList: [],
-  selectedChatId: {},
+  selectedChat: {},
 };
 
 const chatSlice = createSlice({
@@ -23,7 +23,7 @@ const chatSlice = createSlice({
       state.chatList = {};
     },
     selectChat(state, action) {
-      state.selectedChatId = action.payload;
+      state.selectedChat = action.payload;
     },
   },
 });

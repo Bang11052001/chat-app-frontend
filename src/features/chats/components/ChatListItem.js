@@ -4,7 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { getSender } from "../../../config/chatLogic";
 
-const ChatListItem = ({ chat, onClick, selectedChat, index }) => {
+const ChatListItem = ({ chat, onClick, selectedChat }) => {
   const theme = useTheme();
   const { userLogged } = useSelector((state) => state.user);
 
@@ -18,8 +18,13 @@ const ChatListItem = ({ chat, onClick, selectedChat, index }) => {
         paddingX: 2,
         cursor: "pointer",
         backgroundColor:
-          selectedChat === chat._id ? theme.palette.primary.main : "#E8E8E8",
-        color: selectedChat === chat._id ? "white" : "black",
+          selectedChat._id === chat._id
+            ? theme.palette.primary.main
+            : "#E8E8E8",
+        color: selectedChat._id === chat._id ? "white" : "black",
+        WebkitUserSelect: "none",
+        MozUserSelect: "none",
+        KhtmlUserSelect: "none",
       }}
     >
       <Typography>
