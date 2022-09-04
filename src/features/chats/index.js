@@ -56,7 +56,8 @@ const ChatFeature = () => {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            height: "60px",
+            marginBottom: theme.spacing(2),
+            maxHeight: "40px",
           }}
         >
           <Typography variant="h6">My Chats</Typography>
@@ -69,31 +70,22 @@ const ChatFeature = () => {
           </CreateGroupModal>
         </Box>
 
-        <Box
+        <Stack
+          spacing={1}
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            height: "calc(100vh - 80px - 111px)",
-            overflowY: "hidden",
+            overflowY: "scroll",
+            height: "calc(100vh - 230px)",
           }}
         >
-          <Stack
-            spacing={1}
-            mt={2}
-            sx={{
-              overflowY: "scroll",
-            }}
-          >
-            {chatList?.map((chat) => (
-              <ChatListItem
-                chat={chat}
-                key={chat._id}
-                selectedChat={selectedChat}
-                onClick={handleSelectChat}
-              />
-            ))}
-          </Stack>
-        </Box>
+          {chatList?.map((chat) => (
+            <ChatListItem
+              chat={chat}
+              key={chat._id}
+              selectedChat={selectedChat}
+              onClick={handleSelectChat}
+            />
+          ))}
+        </Stack>
         {/* Chat List Item  */}
       </Paper>
     </Box>
