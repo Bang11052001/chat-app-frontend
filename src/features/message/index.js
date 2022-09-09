@@ -38,11 +38,11 @@ const MessageFeature = ({ notifications, setNotifications }) => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const debounceValue = useDebounce(newMessage, 3000);
-  // const [audio] = useState(
-  //   new Audio(
-  //     "https://res.cloudinary.com/dpmrghbpa/video/upload/v1662468474/Nhac-chuong-tin-nhan-Messenger-www_nhacchuongvui_com_ltlmuy.mp3"
-  //   )
-  // );
+  const [audio] = useState(
+    new Audio(
+      "https://res.cloudinary.com/dpmrghbpa/video/upload/v1662468474/Nhac-chuong-tin-nhan-Messenger-www_nhacchuongvui_com_ltlmuy.mp3"
+    )
+  );
 
   const dispatch = useDispatch();
 
@@ -107,7 +107,7 @@ const MessageFeature = ({ notifications, setNotifications }) => {
     if (!socketConnected) return;
 
     socket.on("message received", (newMessageReceived) => {
-      // audio.play();
+      audio.play();
 
       if (!isSelectedChat || selectedChat._id !== newMessageReceived.chat._id) {
         const isNotification = notifications.some(
