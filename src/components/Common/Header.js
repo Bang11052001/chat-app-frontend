@@ -22,7 +22,7 @@ import { authActions } from "../../features/auth/authSlice";
 import { chatActions } from "../../features/chats/chatSlice";
 import { getCookie } from "../../utils/cookie";
 import ProfileModal from "../miscellaneous/ProfileModal";
-import SwipeableEdgeDrawer from "../miscellaneous/SideDrawer";
+import SideLeftDrawer from "../miscellaneous/SideLeftDrawer";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -305,7 +305,7 @@ export default function Header({ notifications, setNotifications }) {
       {renderNotfication}
 
       {/* sideDrawer */}
-      <SwipeableEdgeDrawer
+      <SideLeftDrawer
         anchor="left"
         state={stateSideDrawer}
         onOpen={openDrawer}

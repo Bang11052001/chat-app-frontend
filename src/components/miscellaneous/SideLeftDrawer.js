@@ -14,7 +14,7 @@ import { getCookie } from "../../utils/cookie";
 import ChatLoading from "../Common/ChatLoading";
 import UserListItem from "../userAvatar/UserListItem";
 
-export default function SideDrawer({ anchor, state, onOpen }) {
+export default function SideLeftDrawer({ anchor, state, onOpen }) {
   const theme = useTheme();
 
   const dispatch = useDispatch();
