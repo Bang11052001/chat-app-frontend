@@ -24,6 +24,7 @@ const chatSlice = createSlice({
     },
     selectChat(state, action) {
       state.selectedChat = action.payload;
+      // state.chatList = [action.payload, ...state.chatList];
     },
   },
 });

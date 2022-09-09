@@ -1,10 +1,20 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Box, Button, Paper, Stack, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Paper,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import chatApi from "../../api/chatApi";
 import CreateGroupModal from "../../components/miscellaneous/GroupModal";
+import { getCookie } from "../../utils/cookie";
 import { chatActions } from "./chatSlice";
 import ChatListItem from "./components/ChatListItem";
 
@@ -12,10 +22,21 @@ const ChatFeature = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { chatList, selectedChat } = useSelector((state) => state.chat);
+  const { chatList, selectedChat, isLoading } = useSelector(
+    (state) => state.chat
+  );
 
   useEffect(() => {
-    dispatch(chatActions.fetchAllChatRequest());
+    const token = getCookie("access_token");
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    dispatch(chatActions.fetchAllChatRequest(config));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
@@ -25,8 +46,17 @@ const ChatFeature = () => {
 
   const handleCreateGroupChat = async (data) => {
     try {
-      const res = await chatApi.createGroupChat({ data });
-      dispatch(chatActions.fetchAllChatRequest());
+      const token = getCookie("access_token");
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const res = await chatApi.createGroupChat({ data, config });
+      dispatch(chatActions.fetchAllChatRequest(config));
       dispatch(chatActions.selectChat(res.data));
       toast.success("create group success");
     } catch (error) {
@@ -57,7 +87,7 @@ const ChatFeature = () => {
             display: "flex",
             justifyContent: "space-between",
             marginBottom: theme.spacing(2),
-            maxHeight: "40px",
+            minHeight: "40px",
           }}
         >
           <Typography variant="h6">My Chats</Typography>
@@ -70,23 +100,34 @@ const ChatFeature = () => {
           </CreateGroupModal>
         </Box>
 
+        {/* Chat List Item  */}
         <Stack
           spacing={1}
           sx={{
             overflowY: "scroll",
-            height: "calc(100vh - 230px)",
+            height: "calc(100vh - 187px)",
           }}
         >
-          {chatList?.map((chat) => (
-            <ChatListItem
-              chat={chat}
-              key={chat._id}
-              selectedChat={selectedChat}
-              onClick={handleSelectChat}
+          {isLoading ? (
+            <CircularProgress
+              color="primary"
+              size={100}
+              sx={{
+                margin: "auto",
+                alignSelf: "center",
+              }}
             />
-          ))}
+          ) : (
+            chatList?.map((chat) => (
+              <ChatListItem
+                chat={chat}
+                key={chat._id}
+                selectedChat={selectedChat}
+                onClick={handleSelectChat}
+              />
+            ))
+          )}
         </Stack>
-        {/* Chat List Item  */}
       </Paper>
     </Box>
   );

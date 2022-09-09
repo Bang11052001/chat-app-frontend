@@ -10,9 +10,10 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import userApi from "../../api/userApi";
+import { useDebounce } from "../../hooks/useDebounce";
+import { getCookie } from "../../utils/cookie";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import UserListItem from "../userAvatar/UserListItem";
-import { useDebouce } from "../../hooks/useDebouce";
 
 export default function CreateUpdateGroupModal({ chat, children, onSubmit }) {
   const [open, setOpen] = useState(false);
@@ -21,9 +22,9 @@ export default function CreateUpdateGroupModal({ chat, children, onSubmit }) {
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchValue, setSearchValue] = useState();
   const [searchResult, setSearchResult] = useState([]);
-  const { userLogged } = useSelector((state) => state.user);
+  const { userLogged } = useSelector((state) => state.auth);
 
-  const deBouceValue = useDebouce(searchValue, 500);
+  const deBounceValue = useDebounce(searchValue, 500);
 
   // open
   const handleClickOpen = () => {
@@ -44,18 +45,29 @@ export default function CreateUpdateGroupModal({ chat, children, onSubmit }) {
       return;
     }
 
+    const token = getCookie("access_token");
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     setSearchLoading(true);
 
     const fetchUser = async () => {
       const { data } = await userApi.searchByNameOrEmail({
-        searchValue: deBouceValue,
+        searchValue: deBounceValue,
+        config,
       });
       setSearchResult(data);
       setSearchLoading(false);
     };
 
     fetchUser();
-  }, [deBouceValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deBounceValue]);
 
   // handle select user
   const handleSelectedUser = (user) => {

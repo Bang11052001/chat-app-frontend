@@ -1,29 +1,26 @@
 import { Grid } from "@mui/material";
 import { useTheme } from "@mui/system";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux/es/exports";
+import React, { useState } from "react";
+import { useSelector } from "react-redux/es/exports";
 import ChatFeature from "../../features/chats";
 import MessageFeature from "../../features/message";
-import { userActions } from "../../features/user/userSlice";
-import { getCookie } from "../../utils/cookie";
 import { Header } from "../Common";
 
 const MainLayout = () => {
   const theme = useTheme();
-  const dispatch = useDispatch();
   const { selectedChat } = useSelector((state) => state.chat);
+  const [notifications, setNotifications] = useState([]);
 
   const isSelectedUser = Object.keys(selectedChat).length > 0;
-
-  useEffect(() => {
-    dispatch(userActions.fetchUserByIdRequest(getCookie("access_token")));
-  }, [dispatch]);
 
   return (
     <Grid container>
       {/* Header  */}
       <Grid item xs={12} md={12} lg={12}>
-        <Header />
+        <Header
+          notifications={notifications}
+          setNotifications={setNotifications}
+        />
       </Grid>
 
       {/* Sidebar  */}
@@ -55,7 +52,10 @@ const MainLayout = () => {
             },
           }}
         >
-          <MessageFeature />
+          <MessageFeature
+            setNotifications={setNotifications}
+            notifications={notifications}
+          />
         </Grid>
       </Grid>
     </Grid>

@@ -2,15 +2,10 @@ import { Avatar, Box, Tooltip, Typography } from "@mui/material";
 import { useTheme } from "@mui/system";
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import {
-  isLastestMessage,
-  isLastMessage,
-  isSameSender,
-} from "../../../config/chatLogic";
+import { isLastMessage, isSameSender } from "../../../config/chatLogic";
 
-const ScrollableChat = () => {
-  const { messages } = useSelector((state) => state.message);
-  const { userLogged } = useSelector((state) => state.user);
+const ScrollableChat = ({ messages }) => {
+  const { userLogged } = useSelector((state) => state.auth);
   const theme = useTheme();
   const messagesEndRef = useRef(null);
 
@@ -59,14 +54,15 @@ const ScrollableChat = () => {
             variant="span"
             sx={{
               display: "flex",
+              overflowWrap: "anywhere",
               alignItems: "center",
               backgroundColor:
                 message.sender._id === userLogged._id ? "#BEE3F8" : "#B9F5D0",
               borderRadius: "20px",
-              padding: "0 15px",
+              padding: "3px 15px",
               maxWidth: "75%",
               lineHeight: "1.4rem",
-              height: "40px",
+              minHeight: "40px",
               marginLeft: isLastMessage(messages, message, index, userLogged)
                 ? "0px"
                 : "48px",

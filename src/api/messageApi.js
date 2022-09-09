@@ -1,21 +1,20 @@
-import authConfig from "../config/auth";
 import { axiosClient } from "./axiosClient";
 
 const messageApi = {
-  fetchAllMessage: (chatId) => {
+  fetchAllMessage: ({ chatId, config }) => {
     return axiosClient.get(
       process.env.REACT_APP_BASE_URL + `/message/${chatId}`,
-      authConfig
+      config
     );
   },
-  sendMessage: ({ content, chatId }) => {
+  sendMessage: ({ content, chatId, config }) => {
     return axiosClient.post(
       process.env.REACT_APP_BASE_URL + `/message`,
       {
         content,
         chatId,
       },
-      authConfig
+      config
     );
   },
 };

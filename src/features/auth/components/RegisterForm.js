@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, CircularProgress, useTheme } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
@@ -11,20 +11,23 @@ import {
 
 const RegiterForm = ({ initialValue, onSubmit }) => {
   const theme = useTheme();
+  const [picLoading, setPicLoading] = useState(false);
 
   //   validate
   const schema = yup.object({
-    name: yup.string().required("Name is a required field"),
-    // .test("two-word", "Please enter at least two words", (value) => {
-    //   if (!value) return;
+    name: yup
+      .string()
+      .required("Name is a required field")
+      .test("two-word", "Please enter at least two words", (value) => {
+        if (!value) return;
 
-    //   return (
-    //     value
-    //       .trim()
-    //       .split(" ")
-    //       .filter((x) => !!x).length >= 2
-    //   );
-    // }),
+        return (
+          value
+            .trim()
+            .split(" ")
+            .filter((x) => !!x).length >= 2
+        );
+      }),
     email: yup
       .string()
       .required("Email is a required field")
@@ -73,7 +76,12 @@ const RegiterForm = ({ initialValue, onSubmit }) => {
         />
 
         {/* Upload  Image field*/}
-        <UploadField label="Upload image" name="image" control={control} />
+        <UploadField
+          label="Upload image"
+          name="pic"
+          control={control}
+          setLoading={setPicLoading}
+        />
 
         {/* Button  */}
         <Button
@@ -81,10 +89,11 @@ const RegiterForm = ({ initialValue, onSubmit }) => {
           variant="contained"
           fullWidth
           sx={{ marginTop: theme.spacing(1.5) }}
-          disabled={isSubmitting}
+          disabled={isSubmitting || picLoading}
           color="primary"
         >
-          {isSubmitting && <CircularProgress color="primary" size={16} />}
+          {isSubmitting ||
+            (picLoading && <CircularProgress color="primary" size={16} />)}
           &nbsp; Register
         </Button>
       </form>

@@ -6,7 +6,7 @@ import { getSender } from "../../../config/chatLogic";
 
 const ChatListItem = ({ chat, onClick, selectedChat }) => {
   const theme = useTheme();
-  const { userLogged } = useSelector((state) => state.user);
+  const { userLogged } = useSelector((state) => state.auth);
 
   return (
     <Box
@@ -32,10 +32,10 @@ const ChatListItem = ({ chat, onClick, selectedChat }) => {
       </Typography>
       {chat.latestMessage && (
         <Typography variant="caption">
-          {/* <b>{chat.latestMessage.sender.name} : </b>
+          <b>{chat.latestMessage.sender.name} : </b>
           {chat.latestMessage.content.length > 50
             ? chat.latestMessage.content.substring(0, 51) + "..."
-            : chat.latestMessage.content} */}
+            : chat.latestMessage.content}
         </Typography>
       )}
     </Box>

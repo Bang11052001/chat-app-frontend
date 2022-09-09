@@ -1,13 +1,14 @@
 import { FormControl, FormHelperText, FormLabel, Input } from "@mui/material";
+import axios from "axios";
 import React from "react";
 import { useController } from "react-hook-form";
-import cloudinaryUpload from "../../api/uploads";
 
 export const UploadField = ({
   size = "small",
   control,
   label,
   name,
+  setLoading,
   ...inputProps
 }) => {
   const {
@@ -18,12 +19,25 @@ export const UploadField = ({
     name,
   });
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = async (e) => {
+    setLoading(true);
+
     const uploadData = new FormData();
-    uploadData.append("file", e.target.files[0], "file");
-    cloudinaryUpload(uploadData);
-    // console.log(uploadData);
-    // onChange()(e);
+    uploadData.append("file", e.target.files[0]);
+    uploadData.append("upload_preset", "chat_app");
+    uploadData.append("cloud_name", "dpmrghbpa");
+
+    try {
+      const { data } = await axios.post(
+        "https://api.cloudinary.com/v1_1/dpmrghbpa/image/upload",
+        uploadData
+      );
+
+      onChange(data.url.toString());
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

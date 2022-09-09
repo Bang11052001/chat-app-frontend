@@ -2,8 +2,9 @@ import { Badge, Typography, useTheme } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
+
 const UserBadgeItem = ({ user, onClick }) => {
-  const { userLogged } = useSelector((state) => state.user);
+  const { userLogged } = useSelector((state) => state.auth);
   const theme = useTheme();
   return (
     <Badge
@@ -23,7 +24,7 @@ const UserBadgeItem = ({ user, onClick }) => {
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography>
-          {userLogged._id == user._id ? user.name + " (bạn)" : user.name}
+          {userLogged._id === user._id ? user.name + " (bạn)" : user.name}
         </Typography>
         <CloseIcon fontSize="small" sx={{ marginLeft: "2px" }} />
       </Box>

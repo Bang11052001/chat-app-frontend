@@ -13,12 +13,16 @@ import MenuItem from "@mui/material/MenuItem";
 import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/system";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux/es/exports";
+import { getSender } from "../../config/chatLogic";
 import { authActions } from "../../features/auth/authSlice";
+import { chatActions } from "../../features/chats/chatSlice";
+import { getCookie } from "../../utils/cookie";
 import ProfileModal from "../miscellaneous/ProfileModal";
-import SwipeableEdgeDrawer from "../miscellaneous/sideDrawer";
+import SwipeableEdgeDrawer from "../miscellaneous/SideDrawer";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -40,7 +44,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
   position: "absolute",
-  pointerEvents: "none",
+  pointeres: "none",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -59,43 +63,62 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Header() {
+export default function Header({ notifications, setNotifications }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] = React.useState(null);
   const [stateSideDrawer, setStateSideDrawer] = React.useState(false);
-  const { userLogged } = useSelector((state) => state.user);
+  const { userLogged } = useSelector((state) => state.auth);
+  const theme = useTheme();
+
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.user);
+  const { isLoading } = useSelector((state) => state.auth);
 
   const isMenuOpen = Boolean(anchorEl);
 
+  const isNotificationOnpen = Boolean(notificationAnchorEl);
+
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  React.useEffect(() => {
+    dispatch(authActions.fetchUserByIdRequest(getCookie("access_token")));
+  }, [dispatch]);
+
   // Open sideDrawer
-  const openDrawer = (state) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
+  const openDrawer = (state) => (e) => {
+    if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) {
       return;
     }
     setStateSideDrawer(state);
   };
 
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleProfileMenuOpen = (e) => {
+    setAnchorEl(e.currentTarget);
   };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
+  const handleMobileMenuOpen = (e) => {
+    setMobileMoreAnchorEl(e.currentTarget);
   };
 
   const handleLogout = () => {
     dispatch(authActions.logoutRequest());
+  };
+
+  const handleNofificationOpen = (e) => {
+    setNotificationAnchorEl(e.currentTarget);
+  };
+
+  const handleSelectChat = (chat) => {
+    dispatch(chatActions.selectChat(chat));
+    const newNotifications = notifications.filter(
+      (notifi) => notifi.chat._id !== chat._id
+    );
+    setNotificationAnchorEl(false);
+    setNotifications(newNotifications);
   };
 
   const menuId = "primary-search-account-menu";
@@ -121,6 +144,42 @@ export default function Header() {
         <MenuItem>Profile</MenuItem>
       </ProfileModal>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
+    </Menu>
+  );
+
+  const renderNotfication = (
+    <Menu
+      anchorEl={notificationAnchorEl}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isNotificationOnpen}
+      onBlur={() => setNotificationAnchorEl(false)}
+    >
+      {notifications.length > 0 ? (
+        notifications.map((notifi) => (
+          <MenuItem
+            key={notifi._id}
+            onClick={() => handleSelectChat(notifi.chat)}
+          >
+            <Typography variant="span"></Typography>
+            {notifi.chat.isGroupChat
+              ? `New message from ${notifi.chat.chatName}`
+              : `New message from ${getSender(userLogged, notifi.chat.users)}`}
+          </MenuItem>
+        ))
+      ) : (
+        <Typography sx={{ padding: theme.spacing(2) }} variant="span">
+          No message
+        </Typography>
+      )}
     </Menu>
   );
 
@@ -200,8 +259,9 @@ export default function Header() {
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
+              onClick={handleNofificationOpen}
             >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={notifications.length} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -242,6 +302,7 @@ export default function Header() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {renderNotfication}
 
       {/* sideDrawer */}
       <SwipeableEdgeDrawer

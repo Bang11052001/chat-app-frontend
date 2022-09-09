@@ -8,7 +8,7 @@ function* handleAccessChat(action) {
 
 function* handleFetchAllChat(action) {
   try {
-    const { data } = yield call(chatApi.fetchAllChat);
+    const { data } = yield call(chatApi.fetchAllChat, action.payload);
     yield put(chatActions.fetchAllChatSuccess(data));
   } catch (error) {
     yield put(chatActions.fetchAllChatFailed());

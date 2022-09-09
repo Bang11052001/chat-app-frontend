@@ -1,44 +1,40 @@
-import authConfig from "../config/auth";
 import { axiosClient } from "./axiosClient";
 
 const chatApi = {
-  accessChat: ({ id }) => {
+  accessChat: ({ id, config }) => {
     return axiosClient.post(
       process.env.REACT_APP_BASE_URL + `/chat`,
       {
         userId: id,
       },
-      authConfig
+      config
     );
   },
-  fetchAllChat: () => {
-    return axiosClient.get(
-      process.env.REACT_APP_BASE_URL + `/chat`,
-      authConfig
-    );
+  fetchAllChat: (config) => {
+    return axiosClient.get(process.env.REACT_APP_BASE_URL + `/chat`, config);
   },
-  createGroupChat: ({ data }) => {
+  createGroupChat: ({ data, config }) => {
     return axiosClient.post(
       process.env.REACT_APP_BASE_URL + `/chat/group`,
       data,
-      authConfig
+      config
     );
   },
-  leaveGroupChat: ({ data }) => {
+  leaveGroupChat: ({ data, config }) => {
     return axiosClient.delete(
       process.env.REACT_APP_BASE_URL +
         `/chat/group/${data.chatId}/user/${data.userId}`,
-      authConfig
+      config
     );
   },
-  updateGroupChat: ({ data }) => {
+  updateGroupChat: ({ data, config }) => {
     return axiosClient.patch(
       process.env.REACT_APP_BASE_URL + `/chat/group/${data.chatId}`,
       {
         name: data.name,
         users: data.users,
       },
-      authConfig
+      config
     );
   },
 };
