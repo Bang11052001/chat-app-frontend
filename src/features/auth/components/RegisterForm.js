@@ -89,11 +89,12 @@ const RegiterForm = ({ initialValue, onSubmit }) => {
           variant="contained"
           fullWidth
           sx={{ marginTop: theme.spacing(1.5) }}
-          disabled={isSubmitting || picLoading}
+          disabled={isSubmitting || picLoading ? true : false}
           color="primary"
         >
-          {isSubmitting ||
-            (picLoading && <CircularProgress color="primary" size={16} />)}
+          {isSubmitting || picLoading ? (
+            <CircularProgress color="primary" size={16} />
+          ) : undefined}
           &nbsp; Register
         </Button>
       </form>
