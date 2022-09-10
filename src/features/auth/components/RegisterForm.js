@@ -94,8 +94,7 @@ const RegiterForm = ({ initialValue, onSubmit }) => {
           variant="contained"
           fullWidth
           sx={{ marginTop: theme.spacing(1.5) }}
-          // disabled={(isSubmitting && true) || (picLoading && true)}
-          disabled={isSubmitting}
+          disabled={(isSubmitting && true) || (picLoading && true)}
           color="primary"
         >
           {(isSubmitting && <CircularProgress color="primary" size={16} />) ||
