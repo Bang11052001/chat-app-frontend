@@ -11,14 +11,8 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route
-          path="/"
-          element={isLogged ? <Navigate to="/chats" /> : <LoginPage />}
-        ></Route>
-        <Route
-          path="register"
-          element={isLogged ? <Navigate to="/chats" /> : <RegisterPage />}
-        ></Route>
+        <Route path="/" element={<LoginPage />}></Route>
+        <Route path="register" element={<RegisterPage />}></Route>
         <Route
           path="/chats"
           element={

@@ -1,9 +1,10 @@
 import { Box, Paper, Typography } from "@mui/material";
 import { useTheme } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import authService from "../../../api/authApi";
+import { getCookie } from "../../../utils/cookie";
 import { history } from "../../../utils/history";
 import RegiterForm from "../components/RegisterForm";
 
@@ -11,6 +12,12 @@ const LoginPage = () => {
   const theme = useTheme();
 
   const initialValue = {};
+
+  useEffect(() => {
+    const isAuth = getCookie("access_token");
+
+    if (isAuth) history.push("/chats");
+  }, [history]);
 
   const handleFormSubmit = async (data) => {
     try {
