@@ -13,7 +13,6 @@ const LoginPage = () => {
   const initialValue = {};
 
   const handleFormSubmit = async (data) => {
-    console.log(data);
     try {
       await authService.register(data);
       toast.success("Register success!");

@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, CircularProgress, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 import {
   InputField,
@@ -56,8 +57,12 @@ const RegiterForm = ({ initialValue, onSubmit }) => {
     resolver: yupResolver(schema),
   });
 
-  const handleFormSubmit = (data) => {
-    onSubmit(data);
+  const handleFormSubmit = async (data) => {
+    try {
+      await onSubmit(data);
+    } catch (error) {
+      toast.error("Register failed");
+    }
   };
 
   return (
@@ -89,7 +94,8 @@ const RegiterForm = ({ initialValue, onSubmit }) => {
           variant="contained"
           fullWidth
           sx={{ marginTop: theme.spacing(1.5) }}
-          disabled={(isSubmitting && true) || (picLoading && true)}
+          // disabled={(isSubmitting && true) || (picLoading && true)}
+          disabled={isSubmitting}
           color="primary"
         >
           {(isSubmitting && <CircularProgress color="primary" size={16} />) ||
