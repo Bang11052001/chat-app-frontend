@@ -76,7 +76,7 @@ const MessageFeature = ({ notifications, setNotifications }) => {
   useEffect(() => {
     if (!Object.keys(userLogged).length > 0) return;
 
-    socket = io(ENDPOINT);
+    socket = io(ENDPOINT, { transports: ["websocket"] });
     socket.emit("setup", userLogged._id);
     socket.on("connected", () => setSocketConnected(true));
   }, [userLogged]);
