@@ -26,7 +26,7 @@ import { chatActions } from "../chats/chatSlice";
 import MenuOptions from "./components/MenuOption";
 import ScrollableChat from "./components/ScrollableChat";
 
-const ENDPOINT = "https://chat-app-fake.herokuapp.com";
+const ENDPOINT = "https://chat-app-backend-phi.vercel.app/";
 var socket;
 
 const MessageFeature = ({ notifications, setNotifications }) => {
