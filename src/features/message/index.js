@@ -26,7 +26,7 @@ import { chatActions } from "../chats/chatSlice";
 import MenuOptions from "./components/MenuOption";
 import ScrollableChat from "./components/ScrollableChat";
 
-const ENDPOINT = "http://localhost:5000/";
+const ENDPOINT = "https://chat-app-backend-phi.vercel.app";
 var socket;
 
 const MessageFeature = ({ notifications, setNotifications }) => {
