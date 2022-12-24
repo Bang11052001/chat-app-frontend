@@ -26,7 +26,7 @@ import { chatActions } from "../chats/chatSlice";
 import MenuOptions from "./components/MenuOption";
 import ScrollableChat from "./components/ScrollableChat";
 
-const ENDPOINT = "https://chat-app-backend-phi.vercel.app/";
+const ENDPOINT = "http://localhost:5000/";
 var socket;
 
 const MessageFeature = ({ notifications, setNotifications }) => {
@@ -76,7 +76,7 @@ const MessageFeature = ({ notifications, setNotifications }) => {
   useEffect(() => {
     if (!Object.keys(userLogged).length > 0) return;
 
-    socket = io(ENDPOINT, { transports: ["polling"] });
+    socket = io(ENDPOINT);
     socket.emit("setup", userLogged._id);
     socket.on("connected", () => setSocketConnected(true));
   }, [userLogged]);
